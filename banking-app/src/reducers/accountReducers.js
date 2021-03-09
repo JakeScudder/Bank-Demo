@@ -1,31 +1,41 @@
 import {
   ACCOUNT_LIST_REQUEST,
   ACCOUNT_LIST_SUCCESS,
-  ADD_ACCOUNT_REQUEST,
-  ADD_ACCOUNT_SUCCESS,
 } from "../constants/accountConstants";
 
-export const accountListReducer = (state = { accounts: [] }, action) => {
-  switch (action.type) {
-    case ACCOUNT_LIST_REQUEST:
-      return { loading: true };
-    case ACCOUNT_LIST_SUCCESS:
-      return { loading: false, accounts: action.payload };
-    // case ACCOUNT_LIST_FAIL:
-    //   return { loading: false, error: action.payload };
-    default:
-      return state;
-  }
+//Declare initial state
+const initialState = {
+  accounts: [
+    {
+      name: "Frodo",
+      balance: 399,
+    },
+    {
+      name: "Samwise",
+      balance: 580,
+    },
+    {
+      name: "Gandalf",
+      balance: 777,
+    },
+    {
+      name: "Aragorn",
+      balance: 1111,
+    },
+  ],
 };
 
-export const addAccountReducer = (state = { accounts: [] }, action) => {
+export const accountListReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_ACCOUNT_REQUEST:
+    //Set loading true, normally when dealing with a fetch
+    case ACCOUNT_LIST_REQUEST:
       return { loading: true };
-    case ADD_ACCOUNT_SUCCESS:
-      return { loading: false, account: action.payload };
-    // case ACCOUNT_LIST_FAIL:
-    //   return { loading: false, error: action.payload };
+    //Set loading false, return data.  Normally data is fetched in actions
+    case ACCOUNT_LIST_SUCCESS:
+      return {
+        loading: false,
+        accounts: initialState.accounts,
+      };
     default:
       return state;
   }

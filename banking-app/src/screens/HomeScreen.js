@@ -4,17 +4,22 @@ import { Row, Col } from "react-bootstrap";
 import { getAccounts } from "../actions/accountActions";
 
 import Loader from "../components/Loader";
-import AccountForm from "../components/AccountForm";
+// import AccountForm from "../components/AccountForm";
 
 const HomeScreen = () => {
   const dispatch = useDispatch();
 
+  //Get Redux state
   const accountList = useSelector((state) => state.accountList);
-  const { loading, accounts } = accountList;
+  //Destructure
+  const { loading, accounts, success: accountListSuccess } = accountList;
 
   useEffect(() => {
-    dispatch(getAccounts());
-  }, [dispatch]);
+    //If no account info present
+    if (!accountListSuccess) {
+      dispatch(getAccounts());
+    }
+  }, [dispatch, accountListSuccess]);
 
   return (
     <div className="homescreen-container">
@@ -24,19 +29,19 @@ const HomeScreen = () => {
           <Loader />
         ) : accounts ? (
           accounts.map((user) => (
-            <Row className="mb-2">
-              <Col xs={2}>
-                <h5 className="h5-username">{user.name}</h5>
+            <Row className="user-info">
+              <Col xs={5}>
+                <h5 className="h5-username">{user.name}:</h5>
               </Col>
-              <Col xs={2}>
-                <h5 className="h5-account-balance">{user.balance}</h5>
+              <Col xs={5}>
+                <h5 className="h5-account-balance">${user.balance}</h5>
               </Col>
             </Row>
           ))
         ) : null}
       </div>
-      <h3> Add Account</h3>
-      <AccountForm />
+      {/* <h3> Add Account</h3>
+      <AccountForm /> */}
     </div>
   );
 };
